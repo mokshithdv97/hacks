@@ -1,0 +1,65 @@
+const scrapeData = () => {
+const table = document.querySelector('table'); // Assuming the table is the first or only one on the page
+if (!table) {
+console.error("Table not found.");
+return;
+}
+
+const headerRows = Array.from(table.querySelectorAll('thead tr'));
+let headers = [];
+
+headerRows.forEach(row => {
+const cells = Array.from(row.querySelectorAll('th, td'))
+.map(cell => cell.textContent.trim());
+
+```
+if (headers.length === 0) {
+  headers = cells;
+} else {
+  headers = headers.map((header, index) => {
+    return header + ' ' + (cells[index] || '');
+  });
+} 
+```
+});
+
+const rows = Array.from(table.querySelectorAll('tbody tr'))
+.map(row => Array.from(row.querySelectorAll('td'))
+.map(cell => cell.textContent.trim())
+);
+
+return { headers, rows };
+};
+
+const generateCSVData = ({ headers, rows }) => {
+const csvRows = [
+headers.join(','),
+...rows.map(row => row.join(','))
+];
+return csvRows.join('\n');
+};
+
+const downloadCSV = csvData => {
+const blob = new Blob([csvData], { type: 'text/csv' });
+const url = window.URL.createObjectURL(blob);
+const a = document.createElement('a');
+a.setAttribute('hidden', '');
+a.setAttribute('href', url);
+a.setAttribute('download', 'data.csv');
+document.body.appendChild(a);
+[a.click](https://a.click)();
+document.body.removeChild(a);
+};
+
+const main = () => {
+const scrapedData = scrapeData();
+if (!scrapedData) {
+console.error("Could not scrape data.");
+return;
+}
+const csvData = generateCSVData(scrapedData);
+downloadCSV(csvData);
+};
+
+main();
+code to scrape screener queries
