@@ -62,4 +62,3 @@ downloadCSV(csvData);
 };
 
 main();
-code to scrape screener queries
